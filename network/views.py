@@ -76,6 +76,10 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+def profile_view(request, profile_name):
+    return render(request, "network/profile.html") # TODO
+
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
