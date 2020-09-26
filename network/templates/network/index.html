@@ -2,6 +2,7 @@
 
 {% block body %}
     <form id="new_post_form">
+        {% csrf_token %}
         <input type="text" id="new_post_content">
         <input type="submit" value="Post">
     </form>
