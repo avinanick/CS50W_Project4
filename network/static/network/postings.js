@@ -2,13 +2,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Here we should determine what page we are on, and load accordingly
     // May change this to getting a class, then checking its id in the if
-    if (document.getElementById('all_posts')) {
+    const posts_list = document.querySelector('.post_list')
+    if (posts_list.id === "all_posts") {
         // set the listeners for the all posts section
         load_page_posts("all", 1);
         document.getElementById('new_post_form').addEventListener('submit', create_new_post);
     }
-    if(document.getElementById('subscription_posts')) {
+    if(posts_list.id === 'subscription_posts') {
         load_page_posts("subscription", 1);
+    }
+    if(posts_list.id === 'user_posts') {
+        load_page_posts(posts_list.dataset.user, 1);
     }
     
   });
