@@ -10,6 +10,8 @@ from .models import User
 def index(request):
     return render(request, "network/index.html")
 
+def load_posts(request, type):
+    pass # TODO
 
 def login_view(request):
     if request.method == "POST":
