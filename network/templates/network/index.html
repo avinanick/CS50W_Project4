@@ -1,10 +1,12 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <form id="new_post_form">
-        {% csrf_token %}
-        <input type="text" id="new_post_content">
-        <input type="submit" value="Post">
-    </form>
+    {% if user.is_authenticated %}
+        <form id="new_post_form">
+            {% csrf_token %}
+            <input type="text" id="new_post_content">
+            <input type="submit" value="Post">
+        </form>
+    {% endif %}
     <div id="all_posts" class="post_list"></div>
 {% endblock %}
