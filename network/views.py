@@ -29,7 +29,6 @@ def create_post(request):
     new_post.save()
     return JsonResponse({"message": "Successfully posted."}, status=201)
 
-@login_required
 def load_posts(request, type, page_number):
     if type == "all":
         print("get all posts")
