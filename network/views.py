@@ -77,7 +77,12 @@ def logout_view(request):
 
 
 def profile_view(request, profile_name):
-    return render(request, "network/profile.html") # TODO
+    viewed_user = User.objects.get(username=profile_name)
+    return render(request, "network/profile.html", {
+        "viewed_username": viewed_user.username,
+        "viewed_followers": viewed_user.followers.count(),
+        "viewed_subscriptions": viewed_user.subscriptions.count()
+    }) # TODO: handle case in which user does not exist
 
 
 def register(request):

@@ -1,4 +1,13 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+    <div class="profile-head">
+        <h3>{{ viewed_username }}</h3>
+        <p>{{ viewed_subscriptions }}</p>
+        <p>{{ viewed_followers }}</p>
+        {% if user.is_authenticated and viewed_username != user.username %}
+            <button id="follow_button">Follow</button>
+        {% endif %}
+    </div>
+    <div class="post_list" id="user_posts" data-user = {{ viewed_username }}></div>
 {% endblock %}
