@@ -16,7 +16,18 @@ def index(request):
 
 @login_required
 def create_post(request):
+
+    # Creating a new post must be via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
     data = json.loads(request.body)
+    new_post = Posting(
+        poster=request.user,
+        content=data.get("content",""))
+
+    new_post.save()
+    return JsonResponse({"message": "Successfully posted."}, status=201)
 
 @login_required
 def load_posts(request, type, page_number):
@@ -32,6 +43,10 @@ def load_posts(request, type, page_number):
         postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
 
     p = Paginator(postings, 10)
+    if page_number > p.num_pages or page_number < 1:
+        return JsonResponse({
+            "error": "Invalid page number."
+        }, status=400)
     return JsonResponse([[posting.serialize() for posting in p.page(page_number)], p.num_pages])
 
 def login_view(request):
