@@ -6,12 +6,17 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+import json
 
 from .models import User, Posting, Like
 
 
 def index(request):
     return render(request, "network/index.html")
+
+@login_required
+def create_post(request):
+    data = json.loads(request.body)
 
 @login_required
 def load_posts(request, type, page_number):
