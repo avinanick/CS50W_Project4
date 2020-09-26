@@ -13,13 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
   });
 
-function create_new_post() {
+function create_new_post(event) {
+
+    event.preventDefault()
 
     let post_content = document.getElementById('new_post_content').value;
     const csrftoken = getCookie('csrftoken');
 
-    const request = new Request('/create/', {headers: {'X-CSRFToken': csrftoken}});
-    fetch(request, {
+    fetch('/create', {
+        headers: {'X-CSRFToken': csrftoken},
         method: 'POST',
         body: JSON.stringify({
             content: post_content
@@ -27,7 +29,9 @@ function create_new_post() {
       })
       .then(response => {
           console.log(response);
+          document.getElementById('new_post_content').value = "";
           // Should I reload the pages? Do some animation?
+          load_page_posts("all", 1);
       })
 
 }
@@ -43,7 +47,7 @@ function create_posting_element(posting_json) {
     let post_timestamp = document.createElement('p');
     let like_count = document.createElement('p');
 
-    display_container.setAttribute('class', post_display);
+    display_container.setAttribute('class', "post_display");
 
     poster_label.innerHTML = posting_json["poster"];
     post_content.innerHTML = posting_json["content"];
@@ -85,11 +89,16 @@ function load_page_posts(user_set, page_number) {
     .then(response => response.json())
     .then(posts => {
         console.log(posts);
+        // Remove old list
+        let current_posts = document.querySelectorAll(".post_display");
+        for(var post of current_posts) {
+            post.remove()
+        }
         // Get the posts list and add them all using create post element
         // Keep in mind the last element in the object is the number of pages
-        const post_list = document.getElementsByClassName('post_list');
-        for(let i = 0; i < posts.length - 1; i++) {
-            post_list.appendChild(create_posting_element(posts[i]));
+        let post_list = document.querySelector(".post_list");
+        for(let i = 0; i < posts[0].length; i++) {
+            post_list.appendChild(create_posting_element(posts[0][i]));
         }
     })
 
