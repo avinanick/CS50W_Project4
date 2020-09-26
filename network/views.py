@@ -27,7 +27,7 @@ def load_posts(request, type, page_number):
         postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
 
     p = Paginator(postings, 10)
-    return JsonResponse([posting.serialize() for posting in p.page(page_number)])
+    return JsonResponse([[posting.serialize() for posting in p.page(page_number)], p.num_pages])
 
 def login_view(request):
     if request.method == "POST":
