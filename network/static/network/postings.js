@@ -42,22 +42,28 @@ function create_posting_element(posting_json) {
     // likes, if the current user has liked the post or not, the timestamp, and
     // whether or not the user owns this post
     let display_container = document.createElement('div');
+    let poster_link = document.createElement('a');
     let poster_label = document.createElement('h4');
     let post_content = document.createElement('p');
     let post_timestamp = document.createElement('p');
     let like_count = document.createElement('p');
+    let post_info = document.createElement('div');
 
     display_container.setAttribute('class', "post_display");
+    post_info.setAttribute('class', 'post_info');
+    poster_link.setAttribute('href', '/user/' + posting_json["poster"]);
 
     poster_label.innerHTML = posting_json["poster"];
     post_content.innerHTML = posting_json["content"];
     post_timestamp.innerHTML = posting_json["timestamp"];
     like_count.innerHTML = posting_json["likes_count"];
 
-    display_container.appendChild(poster_label);
+    display_container.appendChild(poster_link);
     display_container.appendChild(post_content);
-    display_container.appendChild(post_timestamp);
-    display_container.appendChild(like_count);
+    display_container.appendChild(post_info);
+    poster_link.appendChild(poster_label);
+    post_info.appendChild(like_count);
+    post_info.appendChild(post_timestamp);
 
     return display_container;
 

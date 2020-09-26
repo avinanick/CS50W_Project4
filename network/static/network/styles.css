@@ -1,0 +1,17 @@
+.post_display {
+    border: thin;
+    border-radius: 15px;
+    border-style: solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.post_display div * {
+    color: gray;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.post_info {
+    display: inline-flex;
+}
