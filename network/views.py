@@ -35,14 +35,17 @@ def load_posts(request, type, page_number):
         postings = Posting.objects.order_by("-timestamp").all()
     elif type == "subscription":
         if request.user.is_authenticated:
-            postings = Posting.objects.order_by("-timestamp").all()
+            sub_users = request.user.subscriptions
+            sub_names = [sub.username for sub in sub_users]
+            postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
         else:
             return JsonResponse({"error": "User login required."}, status=400)
     else:
         print("try to find specified user")
-        sub_users = request.user.subscriptions
-        sub_names = [sub.username for sub in sub_users]
-        postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
+        profile_user = User.objects.get(username=type)
+        if not profile_user:
+            return JsonResponse({"error": "User not found."}, status=400)
+        postings = Posting.objects.order_by("-timestamp").filter(poster__username=type)
 
     p = Paginator(postings, 10)
     if page_number > p.num_pages or page_number < 1:
