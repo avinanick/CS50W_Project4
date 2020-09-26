@@ -34,7 +34,10 @@ def load_posts(request, type, page_number):
         print("get all posts")
         postings = Posting.objects.order_by("-timestamp").all()
     elif type == "subscription":
-        postings = Posting.objects.order_by("-timestamp").all()
+        if request.user.is_authenticated:
+            postings = Posting.objects.order_by("-timestamp").all()
+        else:
+            return JsonResponse({"error": "User login required."}, status=400)
     else:
         print("try to find specified user")
         sub_users = request.user.subscriptions
