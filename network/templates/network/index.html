@@ -1,5 +1,9 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+    <form id="new_post_form">
+        <input type="text" id="new_post_content">
+        <input type="submit" value="Post">
+    </form>
     <div id="all_posts"></div>
 {% endblock %}
