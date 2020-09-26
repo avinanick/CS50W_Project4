@@ -13,7 +13,6 @@ class Posting(models.Model):
     def serialize(self):
         pass # TODO: serialize to json
 
-class Reaction(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="reactions")
-    post = models.ForeignKey("Posting", on_delete=models.CASCADE, related_name="reactions")
-    value = models.IntegerField()
+class Like(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="favorites")
+    post = models.ForeignKey("Posting", on_delete=models.CASCADE, related_name="likes")
