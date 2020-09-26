@@ -27,13 +27,14 @@ function create_new_post() {
       })
       .then(response => {
           console.log(response);
+          // Should I reload the pages? Do some animation?
       })
 
 }
 
 function create_posting_element(posting_json) {
 
-    // The postong json should have: the poster name, the content, the number of
+    // The pistong json should have: the poster name, the content, the number of
     // likes, if the current user has liked the post or not, the timestamp, and
     // whether or not the user owns this post
     let display_container = document.createElement('div');
@@ -48,6 +49,13 @@ function create_posting_element(posting_json) {
     post_content.innerHTML = posting_json["content"];
     post_timestamp.innerHTML = posting_json["timestamp"];
     like_count.innerHTML = posting_json["likes_count"];
+
+    display_container.appendChild(poster_label);
+    display_container.appendChild(post_content);
+    display_container.appendChild(post_timestamp);
+    display_container.appendChild(like_count);
+
+    return display_container;
 
 }
 
@@ -72,5 +80,17 @@ function get_num_post_pages(user_set) {
 }
 
 function load_page_posts(user_set, page_number) {
+
+    fetch('/posts/' + user_set + '/' + page_number)
+    .then(response => response.json())
+    .then(posts => {
+        console.log(posts);
+        // Get the posts list and add them all using create post element
+        // Keep in mind the last element in the object is the number of pages
+        const post_list = document.getElementsByClassName('post_list');
+        for(let i = 0; i < posts.length - 1; i++) {
+            post_list.appendChild(create_posting_element(posts[i]));
+        }
+    })
 
 }
