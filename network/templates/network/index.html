@@ -4,8 +4,9 @@
     {% if user.is_authenticated %}
         <form id="new_post_form">
             {% csrf_token %}
+            <h5>New Post</h5>
             <input type="text" id="new_post_content">
-            <input type="submit" value="Post">
+            <input type="submit" value="Post" class="btn btn-primary">
         </form>
     {% endif %}
     <div id="all_posts" class="post_list"></div>

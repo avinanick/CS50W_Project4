@@ -15,3 +15,19 @@
 .post_info {
     display: inline-flex;
 }
+
+#new_post_content {
+    align-self: center;
+    height: 100px;
+    margin: 10px;
+    width: 30%;
+}
+
+#new_post_form {
+    align-self: center;
+    margin: 10px;
+}
+
+#new_post_form h5 {
+    align-content: center;
+}
