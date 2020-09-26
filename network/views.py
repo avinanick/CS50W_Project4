@@ -10,7 +10,7 @@ from .models import User
 def index(request):
     return render(request, "network/index.html")
 
-def load_posts(request, type):
+def load_posts(request, type, page):
     pass # TODO
 
 def login_view(request):
