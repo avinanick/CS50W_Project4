@@ -49,7 +49,7 @@ def load_posts(request, type, page_number):
         return JsonResponse({
             "error": "Invalid page number."
         }, status=400)
-    return JsonResponse([[posting.serialize() for posting in p.page(page_number)], p.num_pages])
+    return JsonResponse([[posting.serialize(request.user) for posting in p.page(page_number)], {"number_of_pages": p.num_pages}], safe=False)
 
 def login_view(request):
     if request.method == "POST":
