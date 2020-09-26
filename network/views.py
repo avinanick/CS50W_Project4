@@ -1,17 +1,33 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 
-from .models import User
+from .models import User, Posting, Like
 
 
 def index(request):
     return render(request, "network/index.html")
 
-def load_posts(request, type, page):
-    pass # TODO
+@login_required
+def load_posts(request, type, page_number):
+    if type == "all":
+        print("get all posts")
+        postings = Posting.objects.order_by("-timestamp").all()
+    elif type == "subscription":
+        postings = Posting.objects.order_by("-timestamp").all()
+    else:
+        print("try to find specified user")
+        sub_users = request.user.subscriptions
+        sub_names = [sub.username for sub in sub_users]
+        postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
+
+    p = Paginator(postings, 10)
+    return JsonResponse([posting.serialize() for posting in p.page(page_number)])
 
 def login_view(request):
     if request.method == "POST":
