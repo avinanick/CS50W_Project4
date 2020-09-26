@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // Here we should determine what page we are on, and load accordingly
+    // May change this to getting a class, then checking its id in the if
     if (document.getElementById('all_posts')) {
         // set the listeners for the all posts section
-        get_page_posts("all", 1);
+        load_page_posts("all", 1);
         document.getElementById('new_post_form').addEventListener('submit', create_new_post);
     }
     if(document.getElementById('subscription_posts')) {
-        get_page_posts("subscription", 1);
+        load_page_posts("subscription", 1);
     }
     
   });
@@ -16,6 +17,17 @@ function create_new_post() {
 
     let post_content = document.getElementById('new_post_content').value;
     const csrftoken = getCookie('csrftoken');
+
+    const request = new Request('/create/', {headers: {'X-CSRFToken': csrftoken}});
+    fetch(request, {
+        method: 'POST',
+        body: JSON.stringify({
+            content: post_content
+        })
+      })
+      .then(response => {
+          console.log(response);
+      })
 
 }
 
@@ -59,6 +71,6 @@ function get_num_post_pages(user_set) {
 
 }
 
-function get_page_posts(user_set, page_number) {
+function load_page_posts(user_set, page_number) {
 
 }
