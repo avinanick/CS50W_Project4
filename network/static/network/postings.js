@@ -67,10 +67,13 @@ function create_new_post(event) {
 
 function create_pagination_element(current_page, num_pages) {
 
-    document.querySelector("#page_nav").remove();
+    let old_nav = document.querySelector("#page_nav");
+    if(old_nav) {
+        old_nav.remove();
+    }
 
     let pagination_list = document.createElement('ul');
-    let pagination_nav = documen.createElement('nav');
+    let pagination_nav = document.createElement('nav');
     const posts_list = document.querySelector('.post_list')
     let post_source = ""
 
@@ -85,7 +88,7 @@ function create_pagination_element(current_page, num_pages) {
     }
     
     pagination_nav.setAttribute("aria-label","...");
-    pagination_nav.setAttribute("id", "page_nav").
+    pagination_nav.setAttribute("id", "page_nav");
     pagination_list.setAttribute("class","pagination");
 
     pagination_nav.appendChild(pagination_list);
@@ -99,7 +102,9 @@ function create_pagination_element(current_page, num_pages) {
         button_link.innerHTML = "Previous";
         button_link.setAttribute('href','#');
 
-        button_link.addEventListener('click', load_page_posts(post_source, current_page - 1));
+        button_link.addEventListener('click', function() {
+            load_page_posts(post_source, current_page - 1)
+        });
 
         previous_button.appendChild(button_link);
         pagination_list.appendChild(previous_button);
@@ -115,7 +120,9 @@ function create_pagination_element(current_page, num_pages) {
         button_link.innerHTML = "Next";
         button_link.setAttribute('href','#');
 
-        button_link.addEventListener('click', load_page_posts(post_source, current_page + 1));
+        button_link.addEventListener('click', function() {
+            load_page_posts(post_source, current_page + 1)
+        });
 
         next_button.appendChild(button_link);
         pagination_list.appendChild(next_button);
