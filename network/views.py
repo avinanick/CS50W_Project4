@@ -38,7 +38,7 @@ def follow_user(request):
 
     data = json.loads(request.body)
 
-    if data.get("add_follow","") :
+    if data.get("follow","") :
         request.user.subscriptions.add(User.objects.get(username=data.get("name","")))
         return JsonResponse({"message": "Successfully followed."}, status=201)
     else:
