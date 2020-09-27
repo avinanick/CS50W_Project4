@@ -6,7 +6,7 @@
     padding: 10px;
 }
 
-.post_display div * {
+.post_display div p {
     color: gray;
     margin-left: 10px;
     margin-right: 10px;

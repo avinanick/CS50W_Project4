@@ -77,7 +77,7 @@ function create_posting_element(posting_json) {
         // add an edit button/link with a listener and data attribute for editing
         let edit_button = document.createElement('button');
         edit_button.innerHTML = "Edit";
-        edit_button.setAttribute('class', 'btn btn-small btn-primary');
+        edit_button.setAttribute('class', 'btn btn-outline-primary btn-small');
         edit_button.addEventListener('click', function() { edit_post(posting_json["id"]) })
         post_info.appendChild(edit_button);
     }
