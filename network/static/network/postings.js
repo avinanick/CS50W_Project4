@@ -21,6 +21,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
   });
 
+function cancel_edit(event, old_text, post_id) {
+
+    let cancel_button = event.target;
+    let edit_content = cancel_button.parentNode.parentNode.parentNode.childNodes[1];
+
+    let post_content = document.createElement('p');
+
+    post_content.innerHTML = old_text;
+
+    let edit_button = document.createElement('button');
+    edit_button.innerHTML = "Edit";
+    edit_button.setAttribute('class', 'btn btn-outline-primary btn-small');
+    edit_button.addEventListener('click', function(event) { 
+        edit_post(event, post_id) 
+    });
+
+    cancel_button.parentNode.parentNode.replaceChild(edit_button, cancel_button.parentNode);
+    edit_content.parentNode.replaceChild(post_content, edit_content);
+
+}
+
 function create_new_post(event) {
 
     event.preventDefault()
@@ -78,7 +99,7 @@ function create_posting_element(posting_json) {
         let edit_button = document.createElement('button');
         edit_button.innerHTML = "Edit";
         edit_button.setAttribute('class', 'btn btn-outline-primary btn-small');
-        edit_button.addEventListener('click', function() { edit_post(posting_json["id"]) })
+        edit_button.addEventListener('click', function(event) { edit_post(event, posting_json["id"]) })
         post_info.appendChild(edit_button);
     }
 
@@ -86,13 +107,33 @@ function create_posting_element(posting_json) {
 
 }
 
-function edit_post(post_id) {
+function edit_post(event, post_id) {
+
+    let edit_button = event.target;
+    let content = edit_button.parentNode.parentNode.childNodes[1];
 
     let edit_post_section = document.createElement('div');
     let edit_post_text = document.createElement('textarea');
     let edit_post_buttons = document.createElement('div');
     let edit_post_confirm = document.createElement('button');
     let edit_post_cancel = document.createElement('button');
+
+    edit_post_cancel.innerHTML = "Cancel";
+    edit_post_confirm.innerHTML = "Submit";
+    edit_post_text.value = content.innerHTML;
+
+    edit_post_confirm.addEventListener('click', function(event) {
+        submit_edit(event, post_id)
+    });
+    edit_post_cancel.addEventListener('click', function(event) {
+        cancel_edit(event, content.innerHTML, post_id)
+    });
+
+    edit_post_buttons.appendChild(edit_post_confirm);
+    edit_post_buttons.appendChild(edit_post_cancel);
+
+    edit_button.parentNode.replaceChild(edit_post_buttons, edit_button);
+    content.parentNode.replaceChild(edit_post_text, content);
 
 }
 
@@ -162,6 +203,41 @@ function load_page_posts(user_set, page_number) {
         for(let i = 0; i < posts[0].length; i++) {
             post_list.appendChild(create_posting_element(posts[0][i]));
         }
+    })
+
+}
+
+function submit_edit(event, post_id) {
+
+    let submit_button = event.target;
+    let edit_content = submit_button.parentNode.parentNode.parentNode.childNodes[1];
+
+    const csrftoken = getCookie('csrftoken');
+
+    fetch('update_post', { // I'm certain this will cause issues on the profile page
+        headers: {'X-CSRFToken': csrftoken},
+        method: 'PUT',
+        body: JSON.stringify({
+            content: edit_content.value,
+            id: post_id
+        })
+    })
+    .then(response => {
+
+        let post_content = document.createElement('p');
+
+        post_content.innerHTML = edit_content.value;
+
+        let edit_button = document.createElement('button');
+        edit_button.innerHTML = "Edit";
+        edit_button.setAttribute('class', 'btn btn-outline-primary btn-small');
+        edit_button.addEventListener('click', function(event) { 
+            edit_post(event, posting_json["id"]) 
+        });
+
+        submit_button.parentNode.parentNode.replaceChild(edit_button, submit_button.parentNode);
+        edit_content.parentNode.replaceChild(post_content, edit_content);
+
     })
 
 }
