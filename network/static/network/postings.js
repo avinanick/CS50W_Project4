@@ -80,7 +80,27 @@ function create_posting_element(posting_json) {
 function follow_user() {
 
     let follow_username = document.querySelector('#profile_username').innerHTML;
-    fetch()
+    const csrftoken = getCookie('csrftoken');
+    let add_follow = document.querySelector('#follow_button').innerHTML === 'Follow';
+
+    fetch('follow', {
+        headers: {'X-CSRFToken': csrftoken},
+        method: 'PUT',
+        body: JSON.stringify({
+            name: follow_username,
+            follow: add_follow
+        })
+    })
+    .then(response => {
+        console.log(response);
+        if(add_follow) {
+            document.querySelector('#follow_button').innerHTML = 'Unfollow';
+            // perhaps add some functionality to display the new follow count
+        }
+        else {
+            document.querySelector('#follow_button').innerHTML = 'Follow';
+        }
+    })
 
 }
 
