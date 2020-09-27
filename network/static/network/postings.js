@@ -73,7 +73,26 @@ function create_posting_element(posting_json) {
     post_info.appendChild(like_count);
     post_info.appendChild(post_timestamp);
 
+    if(posting_json["from_user"]) {
+        // add an edit button/link with a listener and data attribute for editing
+        let edit_button = document.createElement('button');
+        edit_button.innerHTML = "Edit";
+        edit_button.setAttribute('class', 'btn btn-small btn-primary');
+        edit_button.addEventListener('click', function() { edit_post(posting_json["id"]) })
+        post_info.appendChild(edit_button);
+    }
+
     return display_container;
+
+}
+
+function edit_post(post_id) {
+
+    let edit_post_section = document.createElement('div');
+    let edit_post_text = document.createElement('textarea');
+    let edit_post_buttons = document.createElement('div');
+    let edit_post_confirm = document.createElement('button');
+    let edit_post_cancel = document.createElement('button');
 
 }
 
