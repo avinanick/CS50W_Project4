@@ -134,3 +134,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+@login_required
+def subscription_view(request):
+    return render(request, "network/subscriptions.html")
