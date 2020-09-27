@@ -138,3 +138,23 @@ def register(request):
 @login_required
 def subscription_view(request):
     return render(request, "network/subscriptions.html")
+
+@login_required
+def toggle_like(event, post_id) {
+    
+}
+
+@login_required
+def update_post(request):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    
+    data = json.loads(request.body)
+
+    post_to_edit = Posting.objects.get(id=data.get("id",""))
+    if post_to_edit.poster != request.user:
+        return JsonResponse({"error": "Users can only edit their own posts."}, status=400)
+
+    post_to_edit.content = data.get("content", "")
+    post_to_edit.save()
+    return JsonResponse({"message": "Post updated."}, status=201)
