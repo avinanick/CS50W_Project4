@@ -4,6 +4,7 @@
     <div class="profile-head">
         <h3 id="profile_username">{{ viewed_username }}</h3>
         <div id="follow_data">
+            {% csrf_token %}
             <p id="followers">Followers: {{ viewed_followers }}</p>
             <p id="following">Following: {{ viewed_subscriptions }}</p>
         </div>
