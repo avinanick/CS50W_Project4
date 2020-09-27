@@ -8,7 +8,13 @@
             <p id="following">Following: {{ viewed_followers }}</p>
         </div>
         {% if user.is_authenticated and viewed_username != user.username %}
-            <button id="follow_button">Follow</button>
+            <button id="follow_button">
+                {% if not already_followed %}
+                    Follow
+                {% else %}
+                    Unfollow
+                {% endif %}
+            </button>
         {% endif %}
     </div>
     <div class="post_list" id="user_posts" data-user = {{ viewed_username }}></div>
