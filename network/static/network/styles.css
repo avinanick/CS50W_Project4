@@ -16,6 +16,19 @@
     display: inline-flex;
 }
 
+.profile-head {
+    margin: 20px;
+    border-bottom: 2px solid gray;
+}
+
+#follow_data {
+    display: inline-flex;
+}
+
+#follow_data * {
+    margin: 10px;
+}
+
 #new_post_content {
     align-self: center;
     height: 100px;
