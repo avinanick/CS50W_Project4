@@ -81,7 +81,9 @@ function follow_user() {
 
     let follow_username = document.querySelector('#profile_username').innerHTML;
     const csrftoken = getCookie('csrftoken');
-    let add_follow = document.querySelector('#follow_button').innerHTML === 'Follow';
+    const follow_button = document.querySelector('#follow_button');
+    let add_follow = (follow_button.innerHTML.trim() === "Follow");
+    console.log(add_follow)
 
     fetch('follow', {
         headers: {'X-CSRFToken': csrftoken},
@@ -94,11 +96,11 @@ function follow_user() {
     .then(response => {
         console.log(response);
         if(add_follow) {
-            document.querySelector('#follow_button').innerHTML = 'Unfollow';
+            follow_button.innerHTML = 'Unfollow';
             // perhaps add some functionality to display the new follow count
         }
         else {
-            document.querySelector('#follow_button').innerHTML = 'Follow';
+            follow_button.innerHTML = 'Follow';
         }
     })
 
