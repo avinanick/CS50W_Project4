@@ -75,17 +75,21 @@ function create_posting_element(posting_json) {
     let poster_label = document.createElement('h4');
     let post_content = document.createElement('p');
     let post_timestamp = document.createElement('p');
-    let like_count = document.createElement('p');
+    let like_count = document.createElement('button');
     let post_info = document.createElement('div');
 
     display_container.setAttribute('class', "post_display");
     post_info.setAttribute('class', 'post_info');
     poster_link.setAttribute('href', '/user/' + posting_json["poster"]);
+    like_count.setAttribute('class', 'btn btn-small');
+    like_count.addEventListener('click', function(event) {
+        toggle_like(event, posting_json["id"])
+    });
 
     poster_label.innerHTML = posting_json["poster"];
     post_content.innerHTML = posting_json["content"];
     post_timestamp.innerHTML = posting_json["timestamp"];
-    like_count.innerHTML = posting_json["likes_count"];
+    like_count.innerHTML = "Likes: " + posting_json["likes_count"];
 
     display_container.appendChild(poster_link);
     display_container.appendChild(post_content);
@@ -99,7 +103,9 @@ function create_posting_element(posting_json) {
         let edit_button = document.createElement('button');
         edit_button.innerHTML = "Edit";
         edit_button.setAttribute('class', 'btn btn-outline-primary btn-small');
-        edit_button.addEventListener('click', function(event) { edit_post(event, posting_json["id"]) })
+        edit_button.addEventListener('click', function(event) { 
+            edit_post(event, posting_json["id"]) 
+        });
         post_info.appendChild(edit_button);
     }
 
@@ -238,6 +244,26 @@ function submit_edit(event, post_id) {
         submit_button.parentNode.parentNode.replaceChild(edit_button, submit_button.parentNode);
         edit_content.parentNode.replaceChild(post_content, edit_content);
 
+    })
+
+}
+
+function toggle_like(event, post_id) {
+
+    let like_button = event.target;
+
+    const csrftoken = getCookie('csrftoken');
+
+    fetch('update_post', { // I'm certain this will cause issues on the profile page
+        headers: {'X-CSRFToken': csrftoken},
+        method: 'PUT',
+        body: JSON.stringify({
+            id: post_id
+        })
+    })
+    .then(response => response.json())
+    .then(update => {
+        like_button.innerHTML("Likes: " + update["likes_count"]);
     })
 
 }
