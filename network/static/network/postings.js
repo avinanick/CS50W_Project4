@@ -65,6 +65,67 @@ function create_new_post(event) {
 
 }
 
+function create_pagination_element(current_page, num_pages) {
+
+    document.querySelector("#page_nav").remove();
+
+    let pagination_list = document.createElement('ul');
+    let pagination_nav = documen.createElement('nav');
+    const posts_list = document.querySelector('.post_list')
+    let post_source = ""
+
+    if (posts_list.id === "all_posts") {
+        post_source = "all";
+    }
+    if(posts_list.id === 'subscription_posts') {
+        post_source = "subscription";
+    }
+    if(posts_list.id === 'user_posts') {
+        post_source = posts_list.dataset.user;
+    }
+    
+    pagination_nav.setAttribute("aria-label","...");
+    pagination_nav.setAttribute("id", "page_nav").
+    pagination_list.setAttribute("class","pagination");
+
+    pagination_nav.appendChild(pagination_list);
+
+    if(current_page > 1) {
+        let previous_button = document.createElement('li');
+        let button_link = document.createElement('a');
+
+        previous_button.setAttribute('class', 'page-item');
+        button_link.setAttribute('class', 'page-link');
+        button_link.innerHTML = "Previous";
+        button_link.setAttribute('href','#');
+
+        button_link.addEventListener('click', load_page_posts(post_source, current_page - 1));
+
+        previous_button.appendChild(button_link);
+        pagination_list.appendChild(previous_button);
+        
+    }
+
+    if(current_page < num_pages) {
+        let next_button = document.createElement('li');
+        let button_link = document.createElement('a');
+
+        next_button.setAttribute('class', 'page-item');
+        button_link.setAttribute('class', 'page-link');
+        button_link.innerHTML = "Next";
+        button_link.setAttribute('href','#');
+
+        button_link.addEventListener('click', load_page_posts(post_source, current_page + 1));
+
+        next_button.appendChild(button_link);
+        pagination_list.appendChild(next_button);
+        
+    }
+
+    posts_list.appendChild(pagination_nav);
+
+}
+
 function create_posting_element(posting_json) {
 
     // The pistong json should have: the poster name, the content, the number of
@@ -208,6 +269,10 @@ function load_page_posts(user_set, page_number) {
         let post_list = document.querySelector(".post_list");
         for(let i = 0; i < posts[0].length; i++) {
             post_list.appendChild(create_posting_element(posts[0][i]));
+        }
+        // At the bottom of the page, I need the pagination stuff
+        if(posts[1]["number_of_pages"] > 1) {
+            create_pagination_element(page_number, posts[1]["number_of_pages"]);
         }
     })
 
