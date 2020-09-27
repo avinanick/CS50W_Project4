@@ -2,9 +2,11 @@
 
 {% block body %}
     <div class="profile-head">
-        <h3>{{ viewed_username }}</h3>
-        <p>{{ viewed_subscriptions }}</p>
-        <p>{{ viewed_followers }}</p>
+        <h3 id="profile_username">{{ viewed_username }}</h3>
+        <div id="follow_data">
+            <p id="followers">Followers: {{ viewed_subscriptions }}</p>
+            <p id="following">Following: {{ viewed_followers }}</p>
+        </div>
         {% if user.is_authenticated and viewed_username != user.username %}
             <button id="follow_button">Follow</button>
         {% endif %}

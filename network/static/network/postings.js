@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if(posts_list.id === 'user_posts') {
         load_page_posts(posts_list.dataset.user, 1);
+        const follow_button = document.querySelector('#follow_button');
+        if(follow_button) {
+            follow_button.addEventListener('click', follow_user);
+        }
     }
     
   });
@@ -70,6 +74,13 @@ function create_posting_element(posting_json) {
     post_info.appendChild(post_timestamp);
 
     return display_container;
+
+}
+
+function follow_user() {
+
+    let follow_username = document.querySelector('#profile_username').innerHTML;
+    fetch()
 
 }
 
