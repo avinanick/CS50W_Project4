@@ -52,7 +52,7 @@ def load_posts(request, type, page_number):
         postings = Posting.objects.order_by("-timestamp").all()
     elif type == "subscription":
         if request.user.is_authenticated:
-            sub_users = request.user.subscriptions
+            sub_users = request.user.subscriptions.all()
             sub_names = [sub.username for sub in sub_users]
             postings = Posting.objects.order_by("-timestamp").filter(poster__username__in=sub_names)
         else:
