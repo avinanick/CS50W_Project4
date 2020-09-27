@@ -31,8 +31,19 @@ def create_post(request):
 
 
 @login_required
-def follow_user(request, name):
-    pass # TODO
+def follow_user(request):
+
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+
+    data = json.loads(request.body)
+
+    if data.get("add_follow","") :
+        request.user.subscriptions.add(User.objects.get(username=data.get("name","")))
+        return JsonResponse({"message": "Successfully followed."}, status=201)
+    else:
+        request.user.subscriptions.remove(User.objects.get(username=data.get("name","")))
+        return JsonResponse({"message": "Successfully unfollowed."}, status=201)
 
 
 def load_posts(request, type, page_number):
@@ -87,7 +98,11 @@ def logout_view(request):
 
 def profile_view(request, profile_name):
     viewed_user = User.objects.get(username=profile_name)
+    followed = False
+    if request.user.subscriptions.filter(username=profile_name).exists():
+        followed = True
     return render(request, "network/profile.html", {
+        "already_followed": followed,
         "viewed_username": viewed_user.username,
         "viewed_followers": viewed_user.followers.count(),
         "viewed_subscriptions": viewed_user.subscriptions.count()
