@@ -140,21 +140,21 @@ def subscription_view(request):
     return render(request, "network/subscriptions.html")
 
 @login_required
-def toggle_like(event, post_id):
+def toggle_like(request):
     if request.method != "PUT":
         return JsonResponse({"error": "PUT request required."}, status=400)
     
     data = json.loads(request.body)
 
     post_to_like = Posting.objects.get(id=data.get("id",""))
-    if Like.objects.filter(user=request.user, post=post_to_like).exists()
+    if Like.objects.filter(user=request.user, post=post_to_like).exists():
         Like.objects.filter(user=request.user, post=post_to_like).delete()
     else:
         new_like = Like(user=request.user, post=post_to_like)
         new_like.save()
     return JsonResponse({
         "message": "Likes updated.", 
-        "likes_count": Posting.objects.get(id=post_id).likes.count()}, 
+        "likes_count": Posting.objects.get(id=data.get("id","")).likes.count()}, 
         status=201)
 
 @login_required

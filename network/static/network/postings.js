@@ -254,7 +254,7 @@ function toggle_like(event, post_id) {
 
     const csrftoken = getCookie('csrftoken');
 
-    fetch('update_post', { // I'm certain this will cause issues on the profile page
+    fetch('toggle_like', { // I'm certain this will cause issues on the profile page
         headers: {'X-CSRFToken': csrftoken},
         method: 'PUT',
         body: JSON.stringify({
@@ -263,7 +263,7 @@ function toggle_like(event, post_id) {
     })
     .then(response => response.json())
     .then(update => {
-        like_button.innerHTML("Likes: " + update["likes_count"]);
+        like_button.innerHTML = "Likes: " + update["likes_count"];
     })
 
 }
