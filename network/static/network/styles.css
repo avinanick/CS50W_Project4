@@ -44,3 +44,7 @@
 #new_post_form h5 {
     align-content: center;
 }
+
+#page_nav {
+    margin: 15px;
+}
